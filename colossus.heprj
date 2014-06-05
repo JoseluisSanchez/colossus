@@ -1,0 +1,42 @@
+<XMLConfigSettings>
+	<FILEINFO type="ProjectFile"/>
+	<Properties>
+		<WorkDirectory>C:\\Alanit\\develop\\colossus</WorkDirectory>
+		<PLanguage>clipper</PLanguage>
+		<CRLFMode>-1</CRLFMode>
+		<RootDirectory>C:\\Alanit\\develop\\colossus</RootDirectory>
+	</Properties>
+	<NODES>
+		<Folder open="true" name="fuentes">
+			<File name=".\\prg\\main.prg"/>
+			<File name=".\\prg\\pclaves.prg"/>
+			<File name=".\\prg\\pmateria.prg"/>
+			<File name=".\\prg\\Tfsdi.prg"/>
+		</Folder>
+		<Folder open="true" name="compartidas">
+			<File name=".\\prg\\ut_brw.prg"/>
+			<File name=".\\prg\\ut_calend.prg"/>
+			<File name=".\\prg\\ut_common.prg"/>
+			<File name=".\\prg\\ut_fonts.prg"/>
+			<File name=".\\prg\\ut_msg.prg"/>
+			<File name=".\\prg\\Report.prg"/>
+			<File name=".\\prg\\RPreview.prg"/>
+			<File name=".\\prg\\image2pdf.prg"/>
+			<File name=".\\prg\\SayRef.prg"/>
+			<File name=".\\prg\\TAGet.prg"/>
+			<File name=".\\prg\\TAutoGet.prg"/>
+		</Folder>
+		<Folder open="true" name="makefile">
+			<File name=".\\error.log"/>
+			<File name=".\\colossus.ini"/>
+			<File name=".\\todolist.txt"/>
+			<File name=".\\res\\cls.rc"/>
+			<File name=".\\cls1204.bc"/>
+			<File name=".\\cls1204.mak"/>
+		</Folder>
+		<Tool name="&gt;&gt; clean" initial_dir="%ProjectDir%" capture_output="true" context_menu="true" command="C:\\Alanit\\develop\\colossus\\clean.bat"/>
+		<Tool name="&gt;&gt; brc" initial_dir="%ProjectDir%" capture_output="true" context_menu="true" key="121" command="C:\\Alanit\\develop\\colossus\\brc.bat"/>
+		<Tool name="&gt;&gt; make1204" arguments="-f%ProjectDir%\\cls1204" initial_dir="%ProjectDir%" capture_output="true" context_menu="true" save="2" key="122" command="C:\\BCC582\\Bin\\make.exe"/>
+		<Tool name="colossus" initial_dir="%FileDir%" key="123" command="C:\\Alanit\\develop\\colossus\\COLOSSUS.exe"/>
+	</NODES>
+</XMLConfigSettings>
