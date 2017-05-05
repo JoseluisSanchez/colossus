@@ -7,7 +7,7 @@ REQUEST HB_LANG_ES
 REQUEST HB_CODEPAGE_ESWIN
 
 memvar oApp
-memvar oAGet
+// memvar oAGet
 
 function Main()
    public oApp
@@ -27,8 +27,7 @@ function Main()
    SET EPOCH         TO YEAR(DATE()) - 20
    SET MULTIPLE OFF
 
-	oAGet := TAGet():New()
-   oApp  := TApplication():New()
+   oApp := TApplication():New()
    oApp:Activate()
 return Nil
 
@@ -36,8 +35,8 @@ return Nil
 function oApp()
 return oApp
 /*_____________________________________________________________________________*/
-function oAGet()
-return oAGet
+//function oAGet()
+//return oAGet
 /*_____________________________________________________________________________*/
 CLASS TApplication
 
@@ -50,7 +49,6 @@ CLASS TApplication
    DATA  oWndMain
    DATA  oIcon
    DATA  oFont
-	DATA  oFontBold
 	DATA	cMsgBar
    DATA  oMsgItem1, oMsgItem2, oMsgItem3
 	DATA  oToolBar, oImgList, oReBar
@@ -61,6 +59,8 @@ CLASS TApplication
 	DATA  nEdit
 	DATA  aMaterias
    DATA  lGridHided
+	DATA	nClrHL
+	DATA  nClrBar
 
    DATA  cLanguage
    DATA  cDbfPath
@@ -81,13 +81,11 @@ ENDCLASS
 /*_____________________________________________________________________________*/
 
 METHOD NEW() CLASS TApplication
-
+	local aInfo := GetFontInfo(GetFontMenu())
    ::oIcon     := TIcon():New( ,, "ICON1",, )
-	::oFont 	 	:= TFont():New( GetDefaultFontName2(), 0, GetDefaultFontHeight2(), , )
-	::oFontBold	:= TFont():New( GetDefaultFontName2(), 0, GetDefaultFontHeight2()-2, , .t. )
 
    ::cAppName  := "Colossus "
-	::cVersion  := "6.00.a"
+	::cVersion  := "6.10.b"
    ::cIniFile  := TakeOffExt(GetModuleFileName(GetInstance()))+".ini"
    ::cDbfPath  := cFilePath(GetModuleFileName(GetInstance()))
 	::cDbfFile  := GetPvProfString("Browse", "DbfFile", NIL, ::cIniFile)
@@ -96,26 +94,30 @@ METHOD NEW() CLASS TApplication
    ::lGridHided:= .f.
 	::nEdit		:= 0
 	::aMaterias := {}
+	::nClrHL		:= RGB(204,232,255)
+	::nClrbar	:= RGB(165,186,204) 
+   
+	DEFINE FONT ::oFont NAME "Segoe UI" SIZE 0, -12
 
    DEFINE WINDOW ::oWndMain ;
       TITLE ::cAppName+::cVersion ;
       COLOR CLR_BLACK, GetSysColor(15)-RGB(30,30,30) ;
       ICON ::oIcon
 
-   SET MESSAGE OF ::oWndMain TO ::cMsgBar CENTER NOINSET
-	::oWndMain:oMsgBar:oFont := ::oFont
+	::oWndMain:SetFont(::oFont)
+   
+	SET MESSAGE OF ::oWndMain TO ::cMsgBar CENTER NOINSET
+	::oWndMain:oMsgBar:SetFont(::oFont)
 
 	DEFINE MSGITEM ::oMsgItem2;
 	   OF ::oWndMain:oMsgBar;
-	   PROMPT "acerca de Colossus";
-      SIZE 152 FONT ::oFont;
+	   PROMPT "acerca de Colossus" SIZE 152 ;
 	   BITMAPS "MSG_LOTUS", "MSG_LOTUS";
 	   TOOLTIP " " + i18n("Acerca de...") + " "
 	::oMsgItem2:bAction := { || ::AppAcercade( .f. ) }
 
    DEFINE MSGITEM ::oMsgItem3 OF ::oWndMain:oMsgBar ;
-      SIZE 152 FONT ::oFont;
-      PROMPT "www.alanit.com" ;
+      SIZE 152 PROMPT "www.alanit.com" ;
       COLOR RGB(3,95,156), GetSysColor(15)    ;
 		BITMAPS "MSG_ALANIT", "MSG_ALANIT";
       TOOLTIP i18n("visitar la web de alanit");
@@ -139,7 +141,7 @@ METHOD End() CLASS TApplication
 		if MsgYesNo(" ¿ Desea finalizar el programa ?")
 			::oWndMain:End()
 		endif
-	endif
+	endif	
 return ( Self )
 
 /*_____________________________________________________________________________*/
@@ -150,6 +152,11 @@ METHOD Activate() CLASS TApplication
 	::oWndMain:bInit    := {|| iif(n==1 .and. oApp():cDbfFile != NIL, Claves(oApp():cDbfFile), ) }
    ACTIVATE WINDOW ::oWndMain ;
 		VALID ::SetWinCoors()
+
+	Do While ::oFont:nCount > 0
+		::oFont:End()
+	Enddo
+
 return nil
 /*_____________________________________________________________________________*/
 METHOD BuildBtnBar() CLASS TApplication
@@ -275,7 +282,6 @@ METHOD SetWinCoors() CLASS TApplication
 	DbCloseAll()
 	ResAllFree()
    ::oFont:End()
-	::oFontBold:End()
 	::oImgList:End()
 
 RETURN .t.
@@ -311,19 +317,22 @@ METHOD AppAcercade() CLASS TApplication
    @ 10,44 BITMAP aGet[2] RESOURCE 'acercade1' ;
       SIZE 94, 20 OF oDlg PIXEL NOBORDER // TRANSPAREN
    @ 32,10 SAYREF aGet[4] PROMPT "http://www.alanit.com" ;
-      SIZE 142,10 PIXEL CENTERED OF oDlg                 ;
+      SIZE 146,10 PIXEL CENTERED OF oDlg                 ;
       HREF "http://www.alanit.com"                       ;
       COLOR RGB(3,95,156), CLR_WHITE // FONT oMs10Under
-   aGet[4]:cTooltip  := i18n("visite nuestra web para descargar más programas")
+   aGet[4]:cTooltip  := i18n("visita mi web para descargar gratis más programas")
 
-   @ 44,10 SAY aGet[5] PROMPT i18n("Este programa se distribuye bajo licencia:") ;
+   @ 42,10 SAY aGet[5] PROMPT i18n("José Luis Sánchez Navarro") ;
       SIZE 146,9 PIXEL CENTERED OF oDlg ;
       COLOR CLR_GRAY, CLR_WHITE
-   @ 54,10 SAY aGet[6] PROMPT i18n("Licencia Pública General de GNU v. 3") ;
+	@ 54,10 SAY aGet[5] PROMPT i18n("Este programa se distribuye bajo licencia:") ;
+		SIZE 146,9 PIXEL CENTERED OF oDlg ;
+		COLOR CLR_BLACK, CLR_WHITE
+   @ 64,10 SAY aGet[6] PROMPT i18n("Licencia Pública General de GNU v. 3") ;
       SIZE 146,19 PIXEL CENTERED OF oDlg ;
       COLOR CLR_BLACK, CLR_WHITE
-   @ 70,10 SAYREF aGet[7] PROMPT "http://es.wikipedia.org/wiki/GNU_General_Public_License" ;
-      SIZE 142,10 PIXEL OF oDlg     ;
+   @ 74,10 SAYREF aGet[7] PROMPT "http://es.wikipedia.org/wiki/GNU_General_Public_License" ;
+      SIZE 146,10 PIXEL OF oDlg     ;
       HREF "http://es.wikipedia.org/wiki/GNU_General_Public_License" ;
       COLOR RGB(3,95,156), CLR_WHITE // FONT oMs10Under
 
@@ -339,8 +348,8 @@ METHOD AppConfig() CLASS TApplication
 	local nRadio  := Val(GetPvProfString("Config", "nInicio", "1", oApp():cIniFile))
 	local lOk := .f.
 	DEFINE DIALOG oDlg RESOURCE 'CONFIG_'+oApp():cLanguage;
-      TITLE 'Configuración del programa'	 	;
-      FONT  oApp():oFont
+      TITLE 'Configuración del programa'	 
+	oDlg:SetFont(oApp():oFont)
 
    REDEFINE SAY aSay[1] ID 10 OF oDlg
    REDEFINE SAY aSay[2] ID 11 OF oDlg
@@ -374,7 +383,8 @@ FUNCTION ClpView(oClp)
    LOCAL oIcon, oBmp
 
    DEFINE DIALOG oDlgClip RESOURCE 'DlgClipb' ;
-      TITLE oApp():cVersion FONT oApp():oFont
+      TITLE oApp():cVersion 
+	oDlgClip:SetFont(oApp():oFont)
 
    oDlgClip:nStyle := nOr( oDlgClip:nStyle, 4 )
 

@@ -2,7 +2,7 @@
 #include "Report.ch"
 #include "xBrowse.ch"
 #include "ttitle.ch"
-#include "TAutoGet.ch"
+#include "AutoGet.ch"
 
 static oReport
 //_____________________________________________________________________________//
@@ -14,7 +14,7 @@ function Claves(cDbfFile)
    local cClState := GetPvProfString("Browse", "State","", oApp():cIniFile)
    local nClOrder := VAL(GetPvProfString("Browse", "Order","1", oApp():cIniFile))
    local nClRecno := VAL(GetPvProfString("Browse", "Recno","1", oApp():cIniFile))
-   local nSplit   := GETDEFAULTFONTHEIGHT2()*(-9.5)//IIF(LargeFonts(),120,120)
+   local nSplit   := 105 
    local oCont
    local i
    local aTipo    := {i18n("Sitio web"), i18n("Archivo"), i18n("Otro")}
@@ -58,18 +58,21 @@ function ClNewFile()
    local oPassFont := TFont():New("Times New Roman",0,-10,,.f.,,,,)
 
    DEFINE DIALOG oDlg RESOURCE 'PASSWD02_'+oApp():cLanguage;
-      TITLE oApp():cAppName+oApp():cVersion	 	;
-      FONT  oApp():oFont
+      TITLE oApp():cAppName+oApp():cVersion	 	
+   oDlg:SetFont(oApp():oFont)
 
-   REDEFINE TITLE oTitle ID 100 OF oDlg NOBORDER SHADOW NOSHADOW ;
-		GRADIENT { { 1, RGB(151,154,173), CLR_BLACK } } //  , { 0.5, RGB(36,36,47), CLR_BLACK } } // VERTICALGRADIENT
+   //REDEFINE TITLE oTitle ID 100 OF oDlg NOBORDER SHADOW NOSHADOW ; 
+	//	GRADIENT { { 1, RGB(30,30,30), RGB(30,30,30) } }
 
-	@ 10, 12 TITLETEXT OF oTitle TEXT "Indique el nombre y ubicación del fichero de claves a crear." FONT oApp():oFontBold COLOR CLR_WHITE
-	@ 32, 12 TITLETEXT OF oTitle TEXT "La extensión deberá ser .dat o quedar en blanco." FONT oApp():oFontBold COLOR CLR_WHITE
+	//@ 10, 12 TITLETEXT OF oTitle TEXT "Indique el nombre y ubicación del fichero de claves a crear." FONT oApp():oFontBold COLOR CLR_WHITE
+	//@ 32, 12 TITLETEXT OF oTitle TEXT "La extensión deberá ser .dat o quedar en blanco." FONT oApp():oFontBold COLOR CLR_WHITE
 
 	REDEFINE SAY ID 20 OF oDlg
    REDEFINE SAY ID 21 OF Odlg
    REDEFINE SAY ID 22 OF Odlg
+	REDEFINE SAY ID 23 OF Odlg
+	REDEFINE SAY ID 24 OF Odlg
+
    REDEFINE GET aGet[1] VAR cNewFile ID 101 OF oDlg
    REDEFINE BUTTON aGet[2] ID 102 OF oDlg ;
       ACTION ( cNewFile := NIL ,;
@@ -137,16 +140,16 @@ function ClOpenFile(cFile, cPassword)
    	cGetFile := PadR(cFile, 80, ' ')
 	endif
    DEFINE DIALOG oDlg RESOURCE 'PASSWD01_'+oApp():cLanguage;
-      TITLE oApp():cAppName+oApp():cVersion	 	;
-      FONT  oApp():oFont
+      TITLE oApp():cAppName+oApp():cVersion	 	
+	oDlg:SetFont(oApp():oFont)
 
-   REDEFINE TITLE oTitle TEXT "Selecciona el fichero de claves" ID 100 OF oDlg NOBORDER SHADOW NOSHADOW ;
-		GRADIENT { { 1, RGB(151,154,173), CLR_BLACK } } //  , { 0.5, RGB(36,36,47), CLR_BLACK } } // VERTICALGRADIENT
-
-	@ 10, 12 TITLETEXT OF oTitle TEXT "Seleccione el fichero de claves a utilizar:" FONT oApp():oFontBold COLOR CLR_WHITE
+   //REDEFINE TITLE oTitle TEXT "Selecciona el fichero de claves" ID 100 OF oDlg NOBORDER SHADOW NOSHADOW ; 
+	//	GRADIENT { { 1, RGB(30,30,30), RGB(30,30,30) } }
+	//@ 10, 12 TITLETEXT OF oTitle TEXT "Seleccione el fichero de claves a utilizar:" FONT oApp():oFontBold COLOR CLR_WHITE
 
 	REDEFINE SAY ID 20 OF oDlg
    REDEFINE SAY ID 21 OF Odlg
+	REDEFINE SAY ID 22 OF Odlg
    REDEFINE GET aGet[1] VAR cGetFile ID 101 OF oDlg
    REDEFINE BUTTON aGet[2] ID 102 OF oDlg ;
       ACTION ( cGetFile := NIL ,;
@@ -196,13 +199,13 @@ function ClPwdChange()
 	local oPassFont := TFont():New("Times New Roman",0,-10,,.f.,,,,)
 
 	DEFINE DIALOG oDlg RESOURCE 'PASSWD03_'+oApp():cLanguage;
-      TITLE oApp():cDbfFile+".dat"	;
-      FONT  oApp():oFont
+      TITLE "Cambio de contraseña"	
+	oDlg:SetFont(oApp():oFont)
 
-   REDEFINE TITLE oTitle TEXT "Selecciona el fichero de claves" ID 100 OF oDlg NOBORDER SHADOW NOSHADOW ;
-		GRADIENT { { 1, RGB(151,154,173), CLR_BLACK } } //  , { 0.5, RGB(36,36,47), CLR_BLACK } } // VERTICALGRADIENT
+   //REDEFINE TITLE oTitle TEXT "Selecciona el fichero de claves" ID 100 OF oDlg NOBORDER SHADOW NOSHADOW ; 
+	//	GRADIENT { { 1, RGB(30,30,30), RGB(30,30,30) } }
 
-	@ 10, 12 TITLETEXT OF oTitle TEXT "Cambio de contraseña." FONT oApp():oFontBold COLOR CLR_WHITE
+	//@ 10, 12 TITLETEXT OF oTitle TEXT "Cambio de contraseña." FONT oApp():oFontBold COLOR CLR_WHITE
 
 	REDEFINE SAY ID 20 OF oDlg
    REDEFINE SAY ID 21 OF Odlg
@@ -258,6 +261,7 @@ return .t.
 
 function ClIndex()
    local aMaterias := {}
+	local nAt
 	field clconcepto, clusuario, clclave, clmateria, clfchadq, clfchcad, mamateria
 
 	Pack
@@ -269,15 +273,18 @@ function ClIndex()
    INDEX ON dtos(Clfchcad) 	 TAG fchcad   FOR ! DELETED() // EVAL (oProgress:SetPos(nProgress++),SysRefresh()) EVERY 1
 	CL->(DbGoTop())
 	do while ! CL->(Eof())
-		if ! Empty(CL->ClMateria) .and. AScan(aMaterias, CL->ClMateria) == 0
-			AAdd(aMaterias, CL->ClMateria)
+		nAt := AScan(aMaterias, { |a| a[1] == CL->ClMateria })
+		if ! Empty(CL->ClMateria) .and. nAt == 0
+			AAdd(aMaterias, { CL->ClMateria, 1 })
+		elseif nAt != 0
+			aMaterias[nAt, 2] := aMaterias[nAt, 2] + 1 
 		endif
 		CL->(DbSkip())
 	enddo
 	oApp():aMaterias := aMaterias
-	ASort(oApp():aMaterias,,, {|x,y| upper(x) < upper(y) } )
-	oAGet():lMa := .t.
-	oAGet():load()
+	ASort(oApp():aMaterias,,, {|x,y| upper(x[1]) < upper(y[1]) } )
+	//oAGet():lMa := .t.
+	//oAGet():load()
 return nil
 
 //_____________________________________________________________________________//
@@ -294,6 +301,7 @@ function ClEdita( oGrid, lAppend )
    local aGet [18]
    local aSay [19]
    local aBtn [7]
+	local nAt
    /* ___ Fin de la definición de variables ___________________________________*/
 
    if oApp():lGridHided
@@ -325,8 +333,8 @@ function ClEdita( oGrid, lAppend )
    DEFINE DIALOG oDlg RESOURCE 'CLAVE01_'+oApp():cLanguage ;
       TITLE iif( lAppend,;
                  i18n( "Introducción de una clave" ) , ;
-                 i18n( "Modificación de una clave" ) ) ;
-      FONT oApp():oFont
+                 i18n( "Modificación de una clave" ) ) 
+	oDlg:SetFont(oApp():oFont)
 
    REDEFINE SAY aSay[01] ID 201 OF oDlg
    REDEFINE SAY aSay[02] ID 202 OF oDlg
@@ -359,11 +367,19 @@ function ClEdita( oGrid, lAppend )
    aBtn[1]:cTooltip := i18n( "Generar clave" )
 
    REDEFINE AUTOGET aGet[05] ;
-      VAR cClMateria ;
-      ITEMS oAGet():aMa ;
-      ID 105 ;
+      VAR cClMateria 		   ;
+      DATASOURCE {}						;
+		FILTER MaListFilter( uDataSource, cData, Self );     
+		HEIGHTLIST 100 ;
+      ID 105			;
       OF oDlg ;
-      VALID ( MaClave( @cClMateria, aGet[05] ) )
+      VALID ( MaClave( @cClMateria, aGet[05] ) ) ;
+		GRADLIST { { 1, CLR_WHITE, CLR_WHITE } } ; 
+	   GRADITEM { { 1, oApp():nClrHL, oApp():nClrHL } } ; 
+		LINECOLOR oApp():nClrHL ;
+		ITEMCOLOR CLR_BLACK, CLR_BLACK
+	// aGet[5]:bKeyDown = {|nKey| IIF( nKey == VK_SPACE, ShowCalculator( oGet ), .T. ) }
+
    REDEFINE BUTTON aBtn[2] ;
       ID 502 OF oDlg       ;
       ACTION ( Materia(.t.,@cClMateria,aGet[05],oApp():oGrid), aGet[05]:refresh(), aGet[05]:SetFocus(), sysrefresh() )
@@ -451,9 +467,12 @@ function ClEdita( oGrid, lAppend )
       replace Cl->ClCRC       with 'x'
       CL->(DbCommit())
       nRecPtr := nRecAdd
-		if AScan(oApp():aMaterias, CL->ClMateria) == 0
-			AAdd(oApp():aMaterias, CL->ClMateria)
-			ASort(oApp():aMaterias,,, {|x,y| upper(x) < upper(y) } )
+		nAt := AScan(oApp():aMaterias, { |a| a[1] == cClMateria }) 
+		if nAt == 0
+			AAdd(oApp():aMaterias, { CL->ClMateria, 1 } )
+			ASort(oApp():aMaterias,,, {|x,y| upper(x[1]) < upper(y[1]) } )
+		else
+			oApp():aMaterias[nAt,2] := oApp():aMaterias[nAt,2] + 1
 		endif
    else
 		if lAppend
@@ -470,6 +489,22 @@ function ClEdita( oGrid, lAppend )
 return nil
 
 //_____________________________________________________________________________//
+function MaListFilter( aList, cData, oSelf )
+   local aNewList := {}
+   local i
+   for i := 1 to len(oApp():aMaterias)
+		// if cData == VK_SPACE
+   	// 	AAdd( aNewList, { oApp():amaterias[i] } )
+      // else
+		if UPPER( SubStr( oApp():amaterias[i,1], 1, Len( cData ) ) ) == UPPER( cData )
+			if AScan(aNewList, { |a| a[1] == oApp():amaterias[i,1] }) == 0 
+         	AAdd( aNewList, { oApp():amaterias[i,1] } )
+			endif
+      endif 
+   next
+return aNewList
+//-----------------------------------------------------------------------------//
+
 static function ClChgClave( nCllong, aGet )
    local cTxt  := aGet[ 4 ]:GetText()
    cTxt        := SubStr( cTxt, 1, nCllong )
@@ -488,9 +523,11 @@ return nil
 
 function ClBorra( oGrid, oSay )
    local nRecord := CL->(Recno())
-   local nNext
+   local nNext, nAt
 
    if MsgYesNo( i18n( "¿ Está seguro de querer borrar esta clave ?")+CRLF+trim(CL->ClConcepto))
+		nAt := AScan(oApp():aMaterias, { |a| a[1] == CL->ClMateria })
+ 		oApp():aMaterias[nAt,2] := oApp():aMaterias[nAt,2] - 1
       CL->(DbSkip())
       nNext := CL->(Recno())
       CL->(DbGoto(nRecord))
@@ -538,15 +575,14 @@ function ClImprime( oGrid )
    local aEstilo  := { i18n("Cursiva"), i18n("Negrita"), i18n("Negrita Cursiva"),  i18n("Normal") }
    local nDevice  := 0
    local aTipo    := {"Sitio web","Acceso internet","Archivo","Otra clave"}
-   local aMateria := oApp():aMaterias
-   local cMateria
+   local aMateria := {}
+	local cMateria
    local nCounter := 0
 	local nRec, nOrder
 	local oFont1, oFont2, oFont3
 	local i
 	local cToken
 	local aFont    := {}
-
 
    cTitulo1 := Rtrim(cTitulo1)+Space(50-LEN(cTitulo1))
    cTitulo2 := Rtrim(cTitulo2)+Space(50-LEN(cTitulo2))
@@ -568,8 +604,11 @@ function ClImprime( oGrid )
          acEstilo[i] := StrToken(cToken,3,":")
       next
    endif
-
-
+	
+	for i := 1 to len(oApp():aMaterias)
+		Aadd(aMateria, oApp():aMaterias[i,1] )
+	next
+	
    IF LEN(aMateria) > 0
       cMateria := aMateria[1]
    ELSE
@@ -579,8 +618,8 @@ function ClImprime( oGrid )
    aFont := aGetFont( oApp():oWndMain )
 
    DEFINE DIALOG oDlg RESOURCE 'INFORME1_'+oApp():cLanguage OF oApp():oWndMain ;
-      TITLE i18n("Informes de contraseñas") ;
-		FONT oApp():oFont
+      TITLE i18n("Informes de contraseñas") 
+	oDlg:SetFont(oApp():oFont)
 
    REDEFINE FOLDER oFld ;
       ID 100 OF oDlg    ;
@@ -1020,8 +1059,9 @@ function ClBusca( oGrid, cChr )
       retu NIL
    endif
 
-   DEFINE DIALOG oDlg RESOURCE 'DlgBusca' FONT oApp():oFont ;
+   DEFINE DIALOG oDlg RESOURCE 'DlgBusca' ;
       TITLE i18n("Búsqueda de claves")
+	oDlg:SetFont(oApp():oFont)
 
    if nOrder == 1
       REDEFINE SAY PROMPT i18n( "Introduzca el servicio" ) ID 20 OF oDlg

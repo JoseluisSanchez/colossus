@@ -1,5 +1,5 @@
 cd res
-copy cls.rc+manifest.rc colossus.rc
-c:\bcc55\bin\brc32 -ic:\bcc55\include;c:\fivetech\fwh1012\include -r colossus.rc
+c:\bcc\bcc7\bin\brc32 -ic:\bcc\bcc7\include;c:\bcc\bcc7\include\windows\sdk -r colossus.rc
 copy colossus.res ..
-cd ..
+
+

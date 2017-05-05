@@ -1,8 +1,8 @@
 #FWH Borland make, (c) FiveTech Software 2005-2011
 
-HBDIR=c:\fivetech\hb1206
-BCDIR=c:\bcc582
-FWDIR=c:\fivetech\fwh1204
+HBDIR=c:\fivetech\hb32
+BCDIR=c:\bcc\bcc582
+FWDIR=c:\fivetech\fwh1406
 
 #change these paths as needed
 .path.OBJ = .\obj
@@ -17,29 +17,25 @@ PRG =     		 	\
 	MAIN.PRG       \
    PCLAVES.PRG    \
    PMATERIA.PRG   \
+	C5BMP.PRG		\
+	C5IMGLIS.PRG   \
+	C5VITEM.PRG		\
+	C5VMENU.PRG		\
+   REPORT1406.PRG \
+   RPREVIEW1406.PRG\
    TFSDI.PRG      \
+   TSAYREF.PRG    \
    UT_BRW.PRG     \
    UT_CALEND.PRG  \
    UT_COMMON.PRG  \
-   UT_MSG.PRG     \
-   UT_FONTS.PRG   \
-	C5CALEND.PRG   \
-	C5IMGLIS.PRG   \
-	C5BMP.PRG		\
-	C5TIP.PRG 		\
-	C5VMENU.PRG		\
-	C5VITEM.PRG		\
-   SAYREF.PRG     \
-   REPORT.PRG     \
-   RPREVIEW.PRG   \
-   IMAGE2PDF.PRG
+   UT_MSG.PRG     
 
 OBJ = $(PRG:.PRG=.OBJ)
 OBJS = $(OBJ:.\=.\obj)
 PROJECT    : COLOSSUS.EXE
 
 COLOSSUS.EXE : $(PRG:.PRG=.OBJ) $(C:.C=.OBJ) COLOSSUS.RES
-  $(BCDIR)\bin\ilink32 -Gn -aa -Tpe -s @cls1204.bc
+  $(BCDIR)\bin\ilink32 -Gn -aa -Tpe -s @cls1406.bc
 
 .PRG.OBJ:
   $(HBDIR)\bin\harbour $< /N /W1 /ES2 /Oobj\ /I$(FWDIR)\include;$(HBDIR)\include;.\ch

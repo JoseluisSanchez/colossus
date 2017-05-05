@@ -8,18 +8,20 @@ c:\bcc582\lib\c0w32.obj +
   	.\OBJ\UT_COMMON.OBJ  +
 	.\OBJ\UT_MSG.OBJ  	+
  	.\OBJ\UT_FONTS.OBJ  	+
-	.\OBJ\C5CALEND.OBJ  	+
 	.\OBJ\SAYREF.OBJ		+
-	.\OBJ\TAUTOGET.OBJ	+
-	.\OBJ\TAGET.OBJ		+
    .\OBJ\IMAGE2PDF.OBJ  +
+	.\OBJ\C5CALEND.OBJ  	+
+	.\OBJ\C5IMGLIS.OBJ   +
+	.\OBJ\C5BMP.OBJ      +
+	.\OBJ\C5TIP.OBJ      +
+	.\OBJ\C5VMENU.OBJ    +
+	.\OBJ\C5VITEM.OBJ    +
  	.\OBJ\REPORT.OBJ  	+
 	.\OBJ\RPREVIEW.OBJ,  +
 colossus.exe, +
 colossus.map, +
-c:\fivetech\fwh1204\lib1204\c5h.lib c:\fivetech\fwh1204\lib1204\c5calenh.lib +
-c:\fivetech\fwh1204\lib1204\c5taskh.lib +
-c:\fivetech\fwh1204\lib1204\FiveH.lib c:\fivetech\fwh1204\lib1204\FiveHC.lib +
+c:\fivetech\fwh1204\lib1204\FiveH.lib +
+c:\fivetech\fwh1204\lib1204\FiveHC.lib +
 c:\fivetech\hb1206\lib\hbrtl.lib +
 c:\fivetech\hb1206\lib\hbvm.lib +
 c:\fivetech\hb1206\lib\gtgui.lib +

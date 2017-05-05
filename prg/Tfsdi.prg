@@ -23,9 +23,8 @@ METHOD New( oWnd ) CLASS TFsdi
    ::nBottom := aClient[3] - 28 // oApp():oWndMain:oMsgBar:nHeight
    ::nRight  := aClient[4]
    ::nStyle  := nOR( WS_CHILD, 4 )
-   ::oFont   := oApp():oFont
    ::lHelpIcon    := .f.
-
+	::SetFont(oApp():oFont)
    ::lTransparent := .f.
    ::nGridBottom  := (::nBottom / 2) // - oApp():oToolBar:nHeight
    ::nGridRight   := (::nRight / 2 )
@@ -33,7 +32,7 @@ METHOD New( oWnd ) CLASS TFsdi
 
    ::SetColor( CLR_WHITE, GetSysColor(15) )
    ::Register( nOr( CS_VREDRAW, CS_HREDRAW ) )
-
+	
    SetWndDefault( Self )          //  Set Default DEFINEd Window
 
 return Self
@@ -46,7 +45,7 @@ METHOD NewGrid() CLASS TFsdi
    local nClOrder := 1 // VAL(GetPvProfString("Browse", "Order","1", oApp():cIniFile))
    local nClRecno := 1 // VAL(GetPvProfString("Browse", "Recno","1", oApp():cIniFile))
 	local cState   := GetPvProfString("Browse", "State","", oApp():cIniFile)
-   local nSplit   := GETDEFAULTFONTHEIGHT2()*(-9.5)//IIF(LargeFonts(),120,120)
+   local nSplit   := 105 // GETDEFAULTFONTHEIGHT2()*(-10.5)//IIF(LargeFonts(),120,120)
 
 	oApp():oWndMain:cTitle := oApp():cAppName+oApp():cVersion+" · "+oApp():cDbfFile+".dat"
    oApp():oGrid := TXBrowse():New( oApp():oDlg )
@@ -60,8 +59,8 @@ METHOD NewGrid() CLASS TFsdi
    oCol:cHeader  := i18n("Servicio")
    oCol:nWidth   := 134
    oCol:bLClickHeader := {|| CambiaOrden( 1) }
-   oCol:AddResource("SORT1")
-   oCol:AddResource("SORT2")
+   oCol:AddResource("16_SORT_A")
+   oCol:AddResource("16_SORT_B")
    oCol:nHeadBmpNo    := IIF(nClOrder==1,1,2)
    oCol:nHeadBmpAlign := AL_RIGHT
 
@@ -70,8 +69,8 @@ METHOD NewGrid() CLASS TFsdi
    oCol:cHeader  := i18n("Usuario")
    oCol:nWidth   := 108
    oCol:bLClickHeader:= {|| CambiaOrden( 2 ) }
-   oCol:AddResource("SORT1")
-   oCol:AddResource("SORT2")
+   oCol:AddResource("16_SORT_A")
+   oCol:AddResource("16_SORT_B")
    oCol:nHeadBmpNo    := IIF(nClOrder==2,1,2)
    oCol:nHeadBmpAlign := AL_RIGHT
 
@@ -80,8 +79,8 @@ METHOD NewGrid() CLASS TFsdi
    oCol:cHeader  := i18n("Clave")
    oCol:nWidth   := 118
    oCol:bLClickHeader:= {|| CambiaOrden( 3 ) }
-   oCol:AddResource("SORT1")
-   oCol:AddResource("SORT2")
+   oCol:AddResource("16_SORT_A")
+   oCol:AddResource("16_SORT_B")
    oCol:nHeadBmpNo    := IIF(nClOrder==3,1,2)
    oCol:nHeadBmpAlign := AL_RIGHT
 
@@ -90,8 +89,8 @@ METHOD NewGrid() CLASS TFsdi
    oCol:cHeader  := i18n("Materia")
    oCol:nWidth   := 118
    oCol:bLClickHeader:= {|| CambiaOrden( 4 ) }
-   oCol:AddResource("SORT1")
-   oCol:AddResource("SORT2")
+   oCol:AddResource("16_SORT_A")
+   oCol:AddResource("16_SORT_B")
    oCol:nHeadBmpNo    := IIF(nClOrder==4,1,2)
    oCol:nHeadBmpAlign := AL_RIGHT
 
@@ -100,8 +99,8 @@ METHOD NewGrid() CLASS TFsdi
    oCol:cHeader  := i18n("Obtención")
    oCol:nWidth   := 72
    oCol:bLClickHeader:= {|| CambiaOrden( 5 ) }
-   oCol:AddResource("SORT1")
-   oCol:AddResource("SORT2")
+   oCol:AddResource("16_SORT_A")
+   oCol:AddResource("16_SORT_B")
    oCol:nHeadBmpNo    := IIF(nClOrder==5,1,2)
    oCol:nHeadBmpAlign := AL_RIGHT
 
@@ -110,8 +109,8 @@ METHOD NewGrid() CLASS TFsdi
    oCol:cHeader  := i18n("Caducidad")
    oCol:nWidth   := 72
    oCol:bLClickHeader:= {|| CambiaOrden( 6 ) }
-   oCol:AddResource("SORT1")
-   oCol:AddResource("SORT2")
+   oCol:AddResource("16_SORT_A")
+   oCol:AddResource("16_SORT_B")
    oCol:nHeadBmpNo    := IIF(nClOrder==6,1,2)
    oCol:nHeadBmpAlign := AL_RIGHT
 
@@ -153,7 +152,7 @@ return nil
 //----------------------------------------------------------------------------//
 
 METHOD NewMenu() CLASS TFsdi
-	local nSplit   := GETDEFAULTFONTHEIGHT2()*(-9.5)//IIF(LargeFonts(),120,120)
+	local nSplit   := 105 // GETDEFAULTFONTHEIGHT2()*(-10.5)// -9.5
    local i, nClOrder, nClRecno
    local aTipo    := {i18n("Sitio web"), i18n("Archivo"), i18n("Otro")}
    local aVItems[16]
@@ -161,13 +160,11 @@ METHOD NewMenu() CLASS TFsdi
    @  2, 6 VMENU oApp():oVMenu SIZE nSplit - 12, ::nBottom OF oApp():oDlg ;
       COLOR CLR_BLACK, GetSysColor(15) ;
       HEIGHT ITEM 22 XBOX
-   oApp():oVMenu:nClrBox := MIN(GetSysColor(13), GetSysColor(14))
 
    DEFINE TITLE OF oApp():oVMenu        ;
       CAPTION i18n("Claves")+tran(CL->(OrdKeyNo()),'999')+" / "+tran(CL->(OrdKeyCount()),'999') ;
       HEIGHT 25                        ;
-      COLOR GetSysColor(9), GetSysColor(3), GetSysColor(2) ;
-      VERTICALGRADIENT                 ;
+		COLOR GetSysColor(9), oApp():nClrBar ;
       IMAGE "COLOSSUS"
 
 	DEFINE VMENUITEM OF oApp():oVMenu    ;

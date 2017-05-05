@@ -11,17 +11,29 @@ function Materia(lSelect,cClMateria,oGet,oGridCL)
 
    if ! lSelect
       DEFINE DIALOG oDlgMat RESOURCE 'MATER01_'+oApp():cLanguage     ;
-         TITLE i18n("Gestión de materias") FONT oApp():oFont
+         TITLE i18n("Gestión de materias") 
+		oDlgMat:SetFont(oApp():oFont)
    else
       DEFINE DIALOG oDlgMat RESOURCE 'MATER02_'+oApp():cLanguage     ;
-         TITLE i18n("Selección de materias") FONT oApp():oFont
+         TITLE i18n("Selección de materias") 
+		oDlgMat:SetFont(oApp():oFont)
    endif
 
    oGridMa := TXBrowse():New( oDlgMat )
-	Ut_BrwRowConfig( oGridMa, )
 	oGridMa:SetArray(oApp():aMaterias)
+	Ut_BrwRowConfig( oGridMa, )
    oGridMa:aCols[1]:cHeader  := i18n("Materia")
-   oGridMa:aCols[1]:nWidth   := 100
+   oGridMa:aCols[1]:nWidth   := 130
+	oGridMa:aCols[1]:AddResource("16_SORT_A")
+	oGridMa:aCols[1]:AddResource("16_SORT_B")
+   oGridMa:aCols[1]:nHeadBmpNo	 := 1 // { || iif(.t.,1,2) }
+   oGridMa:aCols[1]:nHeadBmpAlign := AL_RIGHT
+	oGridMa:aCols[1]:nHeadStrAlign := AL_LEFT
+	oGridMa:aCols[2]:cHeader  := i18n("Claves")
+   oGridMa:aCols[2]:nWidth   := 60
+   oGridMa:aCols[2]:nHeadStrAlign := AL_RIGHT
+
+
    if lSelect
       oGridMa:aCols[1]:bLDClickData  := {|| (lOk:=.t.,oDlgMat:End()) }
    else
@@ -56,7 +68,8 @@ function Materia(lSelect,cClMateria,oGet,oGridCL)
                   oGridMa:SetFocus(.t.))
 
       if lOK
-         cClMateria := oApp():aMaterias[oGridMa:nArrayAt]
+         cClMateria := oApp():aMaterias[oGridMa:nArrayAt,1]
+			? cClMateria
          oGet:refresh()
       endif
    endif
@@ -69,8 +82,8 @@ return nil
 
 function MaEdit( oGridMa, lAppend, oGridCL, oDlgMat )
    local oDlgEM
-   local cMaMateria  := oApp():aMaterias[oGridMa:nArrayAt]
-   local cOldMateria := oApp():aMaterias[oGridMa:nArrayAt]
+   local cMaMateria  := iif(oGridMa:nArrayAt>0,oApp():aMaterias[oGridMa:nArrayAt],space(20))
+   local cOldMateria := iif(oGridMa:nArrayAt>0,oApp():aMaterias[oGridMa:nArrayAt],space(20))
    local lSave       := .f.
    local lDuplicado
    local cTitulo
@@ -85,10 +98,11 @@ function MaEdit( oGridMa, lAppend, oGridCL, oDlgMat )
    endif
 
    DEFINE DIALOG oDlgEM RESOURCE 'MATER03_'+oApp():cLanguage ;
-      TITLE cSay01 FONT oApp():oFont
+      TITLE cSay01 
+	oDlgEm:SetFont(oApp():oFont)
    oDlgEm:lHelpIcon = .f.
 
-   REDEFINE SAY VAR cSay01     ID 11 OF oDlgEM
+   REDEFINE SAY ID 11 OF oDlgEM
    REDEFINE GET oGet01 VAR cMaMateria ID 12 OF oDlgEM  ;
       VALID MaUnica(@cMaMateria,oGet01,lAppend)
 
@@ -152,10 +166,11 @@ function MaBorra(oGridMa,oGridCL)
 return nil
 /*_____________________________________________________________________________*/
 function MaClave(cMateria,oGet)
-	if AScan(oApp():aMaterias, cMateria) == 0
+	if AScan(oApp():aMaterias, { |a| a[1] == cMateria }) == 0
 		MsgAlert("La materia no existe. Se dará de alta al guardar la clave.")
 	endif
 return .t.
+/*_____________________________________________________________________________*/
 function MaUnica(cMateria,oGet,lAppend)
    local lRet   := .t.
    if Empty(cMateria)
@@ -206,8 +221,9 @@ function MaBusca( oGridMa, cChr )
    local lSeek     := .f.
 	local lRet 		 := .f.
 
-   DEFINE DIALOG oDlg RESOURCE 'DlgBusca' FONT oApp():oFont ;
+   DEFINE DIALOG oDlg RESOURCE 'DlgBusca'  ;
       TITLE i18n("Búsqueda de materias")
+	oDlg:SetFont(oApp():oFont)
 
    REDEFINE SAY PROMPT i18n("Introduzca la materia") ID 20 OF oDlg
    REDEFINE SAY PROMPT i18n("Materia")+":"           ID 21 OF Odlg

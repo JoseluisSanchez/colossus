@@ -32,19 +32,7 @@ function Ut_BrwColConfig( oBrowse, cIniEntry )
 
 	oLbx := TXBrowse():New( oDlg )
 	oLbx:SetArray(aArray)
-
-   oLbx:nMarqueeStyle       := MARQSTYLE_HIGHLWIN7
-   oLbx:nColDividerStyle    := LINESTYLE_LIGHTGRAY
-   oLbx:lColDividerComplete := .t.
-   oLbx:lRecordSelector     := .f.
-	oLbx:lHScroll				 := .f.
-   oLbx:nHeaderHeight       := 20
-   oLbx:nRowHeight          := 20
-	oLbx:lTransparent  	 	 := .f.
-	oLbx:l2007	 				 := .f.
-   oLbx:nDataType 			 := 1 // array
-	oLbx:bChange				 := { || oGet:Refresh() }
-	oLbx:nStretchCol 			 := -1
+	Ut_BrwRowConfig( oLbx, )
 
    oLbx:aCols[1]:cHeader  := i18n("Ver")
    oLbx:aCols[1]:nWidth   := 24
@@ -54,7 +42,8 @@ function Ut_BrwColConfig( oBrowse, cIniEntry )
  	olbx:aCols[1]:bStrData := {|| NIL }
 
    oLbx:aCols[2]:cHeader  := i18n("Columna")
-   oLbx:aCols[2]:nWidth   := 40
+   oLbx:aCols[2]:nWidth   := 90
+	oLbx:aCols[2]:nHeadAlign := AL_LEFT
 
    for i := 1 TO LEN(oLbx:aCols)
       oCol := oLbx:aCols[ i ]
@@ -137,25 +126,27 @@ return NIL
 /*_____________________________________________________________________________*/
 
 function Ut_BrwRowConfig( oBrw, cAlias )
-   oBrw:nRowSel      := 1
-   oBrw:nColSel      := 1
-   oBrw:nColOffset   := 1
-   oBrw:nFreeze      := 0
-   oBrw:nCaptured    := 0
-   oBrw:nLastEditCol := 0
-
+	oBrw:nRowSel      := 1
+	oBrw:nColSel      := 1
+	oBrw:nColOffset   := 1
+	oBrw:nFreeze      := 0
+	oBrw:nCaptured    := 0
+	oBrw:nLastEditCol := 0
 	oBrw:l2007	  	  			 := .f.
 	oBrw:lMultiselect        := .f.
 	oBrw:lTransparent 		 := .f.
-	oBrw:nStretchCol 			 := -1 // STRETCHCOL_LAST
-   oBrw:bClrStd   	   	 := {|| { CLR_BLACK, CLR_WHITE } }
-   oBrw:lColDividerComplete := .t.
-   oBrw:lRecordSelector     := .t.
-   oBrw:nColDividerStyle    := LINESTYLE_LIGHTGRAY
-	oBrw:nHeaderHeight       := 20
-	oBrw:nRowHeight          := 20
-   oBrw:nMarqueeStyle       := MARQSTYLE_HIGHLWIN7  // MARQSTYLE_SOLIDCELL
-   oBrw:nRowDividerStyle    := LINESTYLE_NOLINES
+	oBrw:nMarqueeStyle		 := MARQSTYLE_HIGHLROW
+	oBrw:nStretchCol 			 := 0
+	oBrw:bClrStd   	   	 := {|| { CLR_BLACK, CLR_WHITE } }
+	oBrw:bClrRowFocus   	    := {|| { CLR_BLACK, oApp():nClrHL }} 
+	oBrw:bClrSelFocus  		 := {|| { CLR_BLACK, oApp():nClrHL }} 
+	oBrw:lColDividerComplete := .t.
+	oBrw:lRecordSelector     := .t.
+	oBrw:nColDividerStyle    := LINESTYLE_LIGHTGRAY
+	oBrw:nRowDividerStyle    := LINESTYLE_LIGHTGRAY
+	oBrw:nHeaderHeight       := 24
+	oBrw:nRowHeight          := 22
+	oBrw:lExcelCellWise		 := .f.
 	if cAlias != NIL
 		oBrw:cAlias	 			 := (cAlias)
 	endif

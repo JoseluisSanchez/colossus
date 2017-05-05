@@ -9,7 +9,7 @@ FUNCTION msginfo(cText, cCaption)
    DEFAULT cCaption := oApp():cAppName+oApp():cVersion
 
    DEFINE DIALOG oDlgInfo RESOURCE "UT_INFO_ES" TITLE cCaption
-   oDlgInfo:oFont  := oApp():oFont
+   oDlgInfo:SetFont(oApp():oFont)
 
    REDEFINE SAY PROMPT cText ID 10 OF oDlgInfo
    REDEFINE BITMAP oBmp ID 111 OF oDlgInfo RESOURCE "xpinfo" TRANSPARENT
@@ -30,7 +30,7 @@ FUNCTION msgstop(cText, cCaption)
    DEFAULT cCaption := oApp():cAppName+oApp():cVersion
 
    DEFINE DIALOG oDlgStop RESOURCE "UT_INFO_ES" TITLE cCaption
-   oDlgStop:oFont  := oApp():oFont
+   oDlgStop:SetFont(oApp():oFont)
 
    REDEFINE SAY PROMPT cText ID 10 OF oDlgStop
    REDEFINE BITMAP oBmp ID 111 OF oDlgStop RESOURCE "xpstop" TRANSPARENT
@@ -52,7 +52,7 @@ FUNCTION msgAlert(cText,cCaption)
    DEFAULT cCaption := oApp():cAppName+oApp():cVersion
 
    DEFINE DIALOG oDlgAlert RESOURCE "UT_INFO_ES" TITLE cCaption
-   oDlgAlert:oFont  := oApp():oFont
+   oDlgAlert:SetFont(oApp():oFont)
 
    REDEFINE SAY PROMPT cText ID 10 OF oDlgAlert
    REDEFINE BITMAP oBmp ID 111 OF oDlgAlert RESOURCE "xpalert" TRANSPARENT
@@ -75,7 +75,7 @@ FUNCTION MsgYesNo(cText, cCaption )
    DEFAULT cCaption := oApp():cAppName+oApp():cVersion
 
    DEFINE DIALOG oDlgYesNo RESOURCE "UT_YESNO_ES" TITLE cCaption
-   oDlgYesNo:oFont  := oApp():oFont
+   oDlgYesNo:SetFont(oApp():oFont)
 
    REDEFINE SAY PROMPT cText ID 10 OF oDlgYesNo
    REDEFINE BITMAP oBmp ID 111 OF oDlgYesNo RESOURCE "xpquest" TRANSPARENT
@@ -100,7 +100,7 @@ FUNCTION c5yesnobig(cText, cCaption)
    DEFAULT cCaption := oApp():cAppName+oApp():cVersion
 
    DEFINE DIALOG oDlgYesNo RESOURCE "m5yesnobig" TITLE cCaption
-   oDlgYesNo:nStyle := nOr( oDlgYesNo:nStyle, 4 )
+   oDlgYesNo:SetFont(oApp():oFont)
 
    REDEFINE SAY PROMPT cText ID 10 OF oDlgYesNo
    REDEFINE BITMAP oBmp ID 111 OF oDlgYesNo RESOURCE "xpquest" TRANSPARENT
