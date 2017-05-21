@@ -135,6 +135,8 @@ function Ut_BrwRowConfig( oBrw, cAlias )
 	oBrw:l2007	  	  			 := .f.
 	oBrw:lMultiselect        := .f.
 	oBrw:lTransparent 		 := .f.
+	// oBrw:lNoBorder				 := .t.
+	oBrw:nStyle       		 -= WS_BORDER
 	oBrw:nMarqueeStyle		 := MARQSTYLE_HIGHLROW
 	oBrw:nStretchCol 			 := 0
 	oBrw:bClrStd   	   	 := {|| { CLR_BLACK, CLR_WHITE } }
@@ -147,6 +149,7 @@ function Ut_BrwRowConfig( oBrw, cAlias )
 	oBrw:nHeaderHeight       := 24
 	oBrw:nRowHeight          := 22
 	oBrw:lExcelCellWise		 := .f.
+
 	if cAlias != NIL
 		oBrw:cAlias	 			 := (cAlias)
 	endif

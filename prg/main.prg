@@ -26,7 +26,8 @@ function Main()
    SET CENTURY ON
    SET EPOCH         TO YEAR(DATE()) - 20
    SET MULTIPLE OFF
-
+	
+	Ut_Override()
    oApp := TApplication():New()
    oApp:Activate()
 return Nil
@@ -85,7 +86,7 @@ METHOD NEW() CLASS TApplication
    ::oIcon     := TIcon():New( ,, "ICON1",, )
 
    ::cAppName  := "Colossus "
-	::cVersion  := "6.10.b"
+	::cVersion  := "6.10.c"
    ::cIniFile  := TakeOffExt(GetModuleFileName(GetInstance()))+".ini"
    ::cDbfPath  := cFilePath(GetModuleFileName(GetInstance()))
 	::cDbfFile  := GetPvProfString("Browse", "DbfFile", NIL, ::cIniFile)

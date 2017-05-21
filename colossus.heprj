@@ -13,23 +13,20 @@
 			<File name=".\\prg\\pmateria.prg"/>
 		</Folder>
 		<Folder open="true" name="compartidas">
-			<File name=".\\prg\\c5bmp.prg"/>
-			<File name=".\\prg\\C5ImgLis.prg"/>
+			<File name=".\\prg\\c5imglis.prg"/>
 			<File name=".\\prg\\c5vitem.prg"/>
 			<File name=".\\prg\\c5vmenu.prg"/>
-			<File name=".\\prg\\report1406.prg"/>
-			<File name=".\\prg\\rpreview1406.prg"/>
 			<File name=".\\prg\\Tfsdi.prg"/>
 			<File name=".\\prg\\ut_brw.prg"/>
 			<File name=".\\prg\\ut_calend.prg"/>
 			<File name=".\\prg\\ut_common.prg"/>
 			<File name=".\\prg\\ut_msg.prg"/>
+			<File name=".\\prg\\ut_override.prg"/>
 		</Folder>
 		<Folder open="true" name="makefile">
 			<File name=".\\.gitignore"/>
 			<File name=".\\error.log"/>
 			<File name=".\\colossus.ini"/>
-			<File name=".\\todolist.txt"/>
 			<File name=".\\brc.bat"/>
 			<File name=".\\cls1406.bc"/>
 			<File name=".\\cls1406.mak"/>

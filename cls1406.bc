@@ -2,18 +2,16 @@ c:\bcc\bcc582\lib\c0w32.obj +
 	.\OBJ\MAIN.OBJ			+
 	.\OBJ\PCLAVES.OBJ		+
    .\OBJ\PMATERIA.OBJ  	+
-	.\OBJ\C5BMP.OBJ      +
 	.\OBJ\C5IMGLIS.OBJ   +
 	.\OBJ\C5VITEM.OBJ    +
 	.\OBJ\C5VMENU.OBJ    +
- 	.\OBJ\REPORT1406.OBJ	+
-	.\OBJ\RPREVIEW1406.OBJ+
   	.\OBJ\TFSDI.OBJ 		+
 	.\OBJ\TSAYREF.OBJ		+	
 	.\OBJ\UT_BRW.OBJ 		+
   	.\OBJ\UT_CALEND.OBJ 	+
   	.\OBJ\UT_COMMON.OBJ  +
-	.\OBJ\UT_MSG.OBJ,  	+
+	.\OBJ\UT_MSG.OBJ  	+
+	.\OBJ\UT_OVERRIDE.OBJ,+
 colossus.exe, +
 colossus.map, +
 c:\fivetech\fwh1406\lib\FiveH.lib +

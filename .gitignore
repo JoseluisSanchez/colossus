@@ -1,9 +1,6 @@
 .metadata
 [Oo]bj/
 res/
-prg/report*.prg
-prg/rpreview*.prg
-prg/image2pdf.prg
 
 *.tmp
 *.log
