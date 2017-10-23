@@ -20,13 +20,16 @@ PRG =     		 	\
 	C5IMGLIS.PRG   \
 	C5VITEM.PRG		\
 	C5VMENU.PRG		\
+   REPORT1406.PRG \
+   RPREVIEW1406.PRG\
    TFSDI.PRG      \
+	TRECORD.PRG		\
    TSAYREF.PRG    \
    UT_BRW.PRG     \
    UT_CALEND.PRG  \
    UT_COMMON.PRG  \
-   UT_MSG.PRG     \
-	UT_OVERRIDE.PRG
+	UT_OVERRIDE.PRG\
+   UT_MSG.PRG     
 
 OBJ = $(PRG:.PRG=.OBJ)
 OBJS = $(OBJ:.\=.\obj)
